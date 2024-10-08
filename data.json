@@ -1,0 +1,14 @@
+[
+    {
+        "name" : "Minh",
+        "age" : 30,
+        "job" : "programmer",
+        "male" : true
+    },
+    {
+        "name" : "Huyen",
+        "age" : 25,
+        "job" : "free lancer",
+        "male" : false
+    }
+]
