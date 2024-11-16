@@ -48,13 +48,12 @@
     document.getElementById('Refresh').addEventListener('click', function(){
         console.log("hello world, im pressing the button")
         //Refresh the page by sending a POST request back to server
-        fetch('http://localhost:8080/MinhNC28', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: 'User clicked the button!' }) // Send some data if necessary
+        fetch('http://localhost:8080/CookingACakeForMe').then(reponse => {
+            return reponse.json();
         })
+        .then(data => {
+            console.log(data);
+        });
     })
 </script>
 

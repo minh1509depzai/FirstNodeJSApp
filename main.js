@@ -2,7 +2,7 @@ const fs = require('fs');
 const http = require('http');
 const url = require('url')
 const EventEmitter = require('events')
-
+const express = require('express')
 
 // /* Reading JSON file and parsing it into object */
 // const testJsonFile = fs.readFileSync('./data.json', 'utf-8')
@@ -34,50 +34,73 @@ const EventEmitter = require('events')
 ////////////////////////////////////////////////////////////////////
 //Rewriting the server code with event-based programming style./////
 ////////////////////////////////////////////////////////////////////
-class URLEmmiter extends EventEmitter {
-    constructor() {
-        super();
-    }
+// class URLEmmiter extends EventEmitter {
+//     constructor() {
+//         super();
+//     }
 
-    generalEmits(url,res) {
-        switch (url) {
-            case '/favicon.ico' : this.emit('favicon.ico',res); break;
-            case '/home'        : this.emit('home',res); break;
-            default             : this.emit('Unknown URL: ' + url, res); break;
-        }
-    }
-}   
+//     generalEmits(url,res) {
+//         console.log('url: ' + url);
+//         switch (url) {
+//             case '/favicon.ico' : this.emit('favicon.ico',res); break;
+//             case '/home'        : this.emit('home',res); break;
+//             case '/CookingACakeForMe' : this.emit('cooking-acake',res); break;
+//             default             : this.emit('Unknown URL: ' + url, res); break;
+//         }
+//     }
+// }   
 
-class HTTPReqEmitter extends EventEmitter {
-    constructor() {
-        super();
-    }
+// class HTTPReqEmitter extends EventEmitter {
+//     constructor() {
+//         super();
+//     }
 
-    generalEmits(req, res) {
-        switch (req) {
-            case 'GET'  : this.emit('req',res); break;
-            case 'POST' : this.emit('post',res); break;
-            case 'PUT'  : this.emit('put',res); break;
-        }
-    }
-}
+//     generalEmits(req, res, url) {
+//         switch (req) {
+//             case 'GET'  : this.emit('GET', url, res); break;
+//             case 'POST' : this.emit('POST', req, res); break;
+//             case 'PUT'  : this.emit('PUT', req, res); break;
+//         }
+//     }
+// }
 
-const server = http.createServer();
-const urlEmitter = new URLEmmiter();
-const httpReqEmitter = new HTTPReqEmitter();
-const homePage = fs.readFileSync('./homePage.html', 'utf-8')
+// const server = http.createServer();
+// const urlEmitter = new URLEmmiter();
+// const httpReqEmitter = new HTTPReqEmitter();
+// const homePage = fs.readFileSync('./homePage.html', 'utf-8')
+// const testPage = fs.readFileSync('./testPage.html', 'utf-8')
 
-server.on('connection', () => {
-    console.log('Oh shit, client is trying to connect');
+// server.on('request', (req,res) => {
+//     httpReqEmitter.generalEmits(req.method, res, req.url);
+//     urlEmitter.generalEmits(req.url, res)
+// });
+
+// urlEmitter.on('home', (res) => {
+//     res.end(homePage)
+// });
+
+// urlEmitter.on('cooking-acake', (res) => {
+//     console.log('Hehe');
+//     res.end(testPage);
+// });
+
+
+// server.listen(8080);
+
+////////////////////////////////////////////////////////////////////
+//Rewriting the server code with express module.               /////
+////////////////////////////////////////////////////////////////////
+const app = express();
+const homePage = fs.readFileSync('./homePage.html', 'utf-8');
+const childPage = fs.readFileSync('./testPage.html', 'utf-8');
+app.get('/', (req, res) => {
+    console.log('client requesting home page');
+    res.status(200).end(homePage);
 });
 
-server.on('request', (req,res) => {
-    httpReqEmitter.generalEmits(req.method, res);
-    urlEmitter.generalEmits(req.url, res)
+app.get('/child', (req, res) => {
+    console.log('client requesting home page');
+    res.status(200).end(childPage);
 });
 
-urlEmitter.on('home', (res) => {
-    res.end(homePage)
-});
-
-server.listen(8080);
+app.listen(8080);
