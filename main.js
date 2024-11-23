@@ -93,6 +93,66 @@ const express = require('express')
 const app = express();
 const homePage = fs.readFileSync('./homePage.html', 'utf-8');
 const childPage = fs.readFileSync('./testPage.html', 'utf-8');
+const resources = [
+    {
+        name: "Minh",
+        age: 24
+    },
+    {
+        name: "Tinh",
+        age: 22
+    },
+    {
+        name: "Binh",
+        age: 29
+    }
+];
+
+//API Handler
+const getResourceAll = (req, res) => {
+    console.log(req);
+    res.send(JSON.stringify(resources))
+};
+
+const deleteResourceAll = (req, res) => {
+    resources = [];
+};
+
+const getResourceId = (req, res) => {
+    let id = req.params.id;
+
+    if (id <= 0 && id > resources.length)
+    {
+        res.status(404).send("Index invalid");
+    }
+    else
+    {
+        res.status(200).send(JSON.stringify(resources.at(id)))
+    }
+};
+
+const deleteResourceId = (req, res) => {
+    let id = req.params.id;
+    
+    if (id <= 0 && id > resources.length)
+    {
+        res.status(404).send("Index invalid");
+        return;
+    }
+    
+    resources.delete(id);
+};
+
+app
+    .route('/api/resources/all')
+    .get(getResourceAll)
+    .delete(deleteResourceAll);
+
+app
+    .route('/api/resources/:id')
+    .get(getResourceId)
+    .delete(deleteResourceId);
+
 app.get('/', (req, res) => {
     console.log('client requesting home page');
     res.status(200).end(homePage);
