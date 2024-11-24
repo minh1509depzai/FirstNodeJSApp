@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<script defer>
+    
+</script>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,32 +35,32 @@
 </head>
 <body>
 
-<h1>Menu</h1>
-<ul class="menu">
-    <li>Home</li>
-    <li>About Us</li>
-    <li>Services</li>
-    <li>Portfolio</li>
-    <li>Contact</li>
-    <li>Blog</li>
-    <li>FAQ</li>
-</ul>
+<script>
+    //At the beginning, trying to request the list of customers from the server.
+    fetch('http://localhost:8080/api/resources/all').then(reponse => {
+        return reponse.json();
+    }).then(data => {
+        let UserList = document.getElementById('UserList');
+        data.forEach(Item => {
+
+            //Creating a new Item to add to the list.
+            let NewItem         = document.createElement('li');
+            NewItem.textContent = Item.name;
+            NewItem.onclick     = function() {
+                console.log('Clicking on to item => ' + Item.name);
+            };
+
+            //Adding a new Item to the list.
+            UserList.append(NewItem);
+        });
+    });
+</script>
 
 <button id="Refresh">Refresh</button>
 
-<script>
-    //Handling event when user pressing onto the menu button.
-    document.getElementById('Refresh').addEventListener('click', function(){
-        console.log("hello world, im pressing the button")
-        //Refresh the page by sending a POST request back to server
-        fetch('http://localhost:8080/CookingACakeForMe').then(reponse => {
-            return reponse.json();
-        })
-        .then(data => {
-            console.log(data);
-        });
-    })
-</script>
+<h1>Menu</h1>
+<ul class="menu", id="UserList">
+</ul>
 
 </body>
 </html>

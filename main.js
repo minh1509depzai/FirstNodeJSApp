@@ -110,7 +110,6 @@ const resources = [
 
 //API Handler
 const getResourceAll = (req, res) => {
-    console.log(req);
     res.send(JSON.stringify(resources))
 };
 
