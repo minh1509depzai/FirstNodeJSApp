@@ -1,49 +1,77 @@
-//API Handler
-let users = [
-    {
-        name: "Minh",
-        age: 24
-    },
-    {
-        name: "Tinh",
-        age: 22
-    },
-    {
-        name: "Binh",
-        age: 29
+const UserModel = require('../models/UserModel');
+
+//Performing CRUD operations on user models.
+exports.getUserAll = async (req, res) => {
+    try{
+        const userLists = await UserModel.find()
+        res.status(200).json({
+            status: 'success',
+            message: userLists
+        })    
     }
-];
-
-exports.getUserAll = (req, res) => {
-    res.send(JSON.stringify(users))
-};
-
-exports.deleteAllUser = (req, res) => {
-    console.log("Client deleted users");
-    users = [];
-};
-
-exports.getUserByID = (req, res) => {
-    let id = req.params.id;
-
-    if (id <= 0 && id > users.length)
-    {
-        res.status(404).send("Index invalid");
+    catch(err){
+        res.status(400).json({
+            status:'fail',
+            message: err
+        })
     }
-    else
-    {
-        res.status(200).send(JSON.stringify(users.at(id)))
+};  
+
+exports.deleteAllUser = async (req, res) => {
+    try{
+        await UserModel.deleteMany()
+        res.status(200).json({
+            status: 'success',
+            message: 'All users info have been deleted'
+        })    
+    }
+    catch(err){
+        res.status(400).json({
+            status:'fail',
+            message: err
+        })
     }
 };
 
-exports.deleteUserByID = (req, res) => {
-    let id = req.params.id;
-    
-    if (id <= 0 && id > users.length)
-    {
-        res.status(404).send("Index invalid");
-        return;
+exports.getUserByID = async (req, res) => {
+    try{
+        const user = await UserModel.findOne({id : req.params.id})
+        res.status(200).json({
+            status: 'success',
+            message: user
+        })    
     }
-    
-    users.delete(id);
+    catch(err){
+        res.status(400).json({
+            status:'fail',
+            message: err
+        })
+    }
 };
+
+exports.deleteUserByID = async (req, res) => {
+    try{
+        const user = await UserModel.findOneAndDelete({id : req.params.id})
+        res.status(200).json({
+            status: 'success',
+            message: user
+        })    
+    }
+    catch(err){
+        res.status(400).json({
+            status:'fail',
+            message: err
+        })
+    }
+};
+
+exports.createUser = async (req, res) => {
+    try{
+        let newUser = await UserModel.create(req.body)
+        res.status(201);
+    }
+    catch(err)
+    {
+        res.status(400).json(err);
+    }
+}
