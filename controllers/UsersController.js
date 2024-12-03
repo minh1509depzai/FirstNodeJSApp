@@ -3,7 +3,11 @@ const UserModel = require('../models/UserModel');
 //Performing CRUD operations on user models.
 exports.getUserAll = async (req, res) => {
     try{
-        const userLists = await UserModel.find()
+        console.log('Filtering =>> ' + JSON.stringify(req.query))
+        //Create a deep clone of the query object to avoid modifying it during the execution.
+        const query = {...req.query}
+        const userLists = await UserModel.find(query)
+
         res.status(200).json({
             status: 'success',
             message: userLists
@@ -67,7 +71,7 @@ exports.deleteUserByID = async (req, res) => {
 
 exports.createUser = async (req, res) => {
     try{
-        let newUser = await UserModel.create(req.body)
+        await UserModel.create(req.body)
         res.status(201);
     }
     catch(err)

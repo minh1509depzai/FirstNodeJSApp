@@ -12,11 +12,19 @@ mongoose.connect("mongodb+srv://MinhNC28:minhminhminh1509@cluster0.ngtmp.mongodb
 const Schema = new mongoose.Schema({
     name :   {
         type: String,
-        required: true
+        required: [true, "Name must be provided"]
     },
     age  :   {
         type: Number,
-        required: true
+        required: [true, "Age must be provided"]
+    },
+    job  :   {
+        type: String,
+        required: [true, "Job must be provided"]
+    },
+    male :   {
+        type: Boolean,
+        required: [true, "Gender must be provided"]
     }
 })
 
