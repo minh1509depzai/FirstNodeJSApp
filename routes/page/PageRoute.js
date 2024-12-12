@@ -5,7 +5,10 @@ const homePage  = fs.readFileSync(__dirname + '\\' + 'HomePage.html', 'utf8');
 router
     .route('/home')
     .get((req,res) =>{
-        res.status(200).end(homePage);
+        // res.status(200).end(homePage);
+        res.status(200).render('base', {
+            name : 'Minh'
+        })
     });
 
 module.exports = router;

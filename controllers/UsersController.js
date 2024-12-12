@@ -6,7 +6,15 @@ exports.getUserAll = async (req, res) => {
         console.log('Filtering =>> ' + JSON.stringify(req.query))
         //Create a deep clone of the query object to avoid modifying it during the execution.
         const query = {...req.query}
-        const userLists = await UserModel.find(query)
+        
+        //Get and them remove the sort property from the query object.
+        const sort = req.query?.sort ? req.query.sort : ""
+        delete query.sort
+
+        let userLists = await UserModel.find(query).select('-__v')
+
+        //Sorting
+        userLists = userLists.sort((a , b) => {return a[sort] - b[sort]})
 
         res.status(200).json({
             status: 'success',
@@ -14,6 +22,7 @@ exports.getUserAll = async (req, res) => {
         })    
     }
     catch(err){
+        console.log(err)
         res.status(400).json({
             status:'fail',
             message: err

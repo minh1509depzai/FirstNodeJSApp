@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar ul{
+            list-style-type: none;
+            display: flex; 
+        }
+
+        .navbar{
+            background-color: gray;
+            /* width: 100px; */
+            display: flex; 
+            text-align: center;
+            justify-content: space-around;
+        }
+
+        .navbar a{
+            color: white;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .navbar li{
+            margin: 10px;
+            padding: 50px;
+        }
+
+        .navbar li:hover{
+            background-color: white;
+        }
+
+        .drop-down {
+            flex-direction: column;
+            background-color: white;
+        }
+
+        #drop-down-container{
+            display: none;
+        }
+
+        .navbar a:hover{
+            background-color: black;
+        } 
+        
+        #drop-down-container:hover{
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#">Home</a></li> 
+            <li><a href="#">About</a></li> 
+            <li>
+                <a id="products-item-dropdown" href="#">Products</a>
+                <div id="drop-down-container">
+                    <ul class="drop-down">
+                        <li><a href="#">Power-train</a></li>
+                        <li><a href="#">Infotainment</a></li>
+                        <li><a href="#">Engine</a></li>
+                    </ul>
+                </div>
+            </li> 
+            <li><a href="#">Contacts</a></li> 
+        </ul>
+    </nav>
+</body>
+</html>
