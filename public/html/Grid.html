@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .grid-container{
+            display: grid;
+            background-color: gray;
+            padding: 20px;
+            grid-template-columns: 1fr 10fr 1fr;
+            grid-template-rows: 100px 300px 100px;
+            grid-template-areas:    'header header header'
+                                    'sidebar main main'
+                                    'footer footer footer';
+            gap: 20px
+        }
+        .box{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: purple;
+        }
+        .box:nth-child(even){
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Grid Demo</h1>
+    <div class="grid-container">
+        <div class="box" style="grid-area: header;">header</div>
+        <div class="box" style="grid-area: sidebar;">sidebar</div>
+        <div class="box" style="grid-area: main;">main</div>
+        <div class="box" style="grid-area: footer;">footer</div>
+    </div>
+</body>
+</html>

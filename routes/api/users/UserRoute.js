@@ -14,4 +14,8 @@ router
     .delete(UserController.deleteUserByID)
     .post(UserController.createUser)
 
+router
+    .route('/register')
+    .post(UserController.createUser)
+
 module.exports = router;

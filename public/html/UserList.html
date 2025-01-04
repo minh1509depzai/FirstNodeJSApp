@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @header_background_color: #333;
+        @header_text_color: #FDFDFD;
+        @alternate_row_background_color: #DDD;
+
+        @table_width: 600px;
+        @table_body_height: 300px;
+        @column_one_width: 200px;
+        @column_two_width: 200px;
+        @column_three_width: 350px;
+
+        .fixed_headers {
+            width: 700px;
+            height: 500px
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+        th{ 
+            text-decoration: underline; 
+        }
+        th, td {
+            padding: 10px;
+            vertical-align: center;
+            text-align: left;
+        }
+        
+        /* td:nth-child(1), th:nth-child(1) { min-width: @column_one_width; } */
+        td:nth-child(1), th:nth-child(1) { min-width: 100px; } /*Select the first item of the body element, the header and setting their width to 100px */
+        td:nth-child(2), th:nth-child(2) { min-width: 300px; }
+        td:nth-child(3), th:nth-child(3) { width: 300px; }
+
+        thead {
+            background-color: #333;
+            color: #FDFDFD;
+            tr {
+                display: block;
+                position: relative;
+            }
+        }
+
+        tbody {
+            display: block;
+            overflow: auto; /*Ensure that the body is scrollable when the content exceeds the specified height.*/
+            height: 300px;
+            tr:nth-child(even) {
+                background-color: #DDD;
+            }
+        }
+
+        tfoot {
+
+        }
+
+        .old_ie_wrapper {
+            height: 300px;
+            width: @table_width;
+            overflow-x: hidden;
+            overflow-y: auto;
+            tbody { height: auto; }
+        }
+
+        .button {
+            display: flex;
+            width: 100px;
+            height: 50px;
+            font-style: Helvetica;
+            font-size: large;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .button:hover{
+            background-color: #DDD;
+        }
+    </style>
+</head>
+<body>
+    <!-- IE < 10 does not like giving a tbody a height.  The workaround here applies the scrolling to a wrapped <div>. -->
+<!--[if lte IE 9]>
+<div class="old_ie_wrapper">
+<!--<![endif]-->
+
+<table class="fixed_headers">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <button class="button">Back</button>
+            </td>
+        </tr>
+    </tfoot>
+  </table>
+  
+  <script>
+     fetch('http://localhost:8080/api/users/all', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (!response.ok) {     
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then(data => {
+        data.message.forEach(element => {
+            console.log("Message:", element)
+            let row = document.createElement('tr');
+            let name = document.createElement('td');
+            let pass = document.createElement('td');
+            let email = document.createElement('td');
+            name.textContent = element.name;
+            pass.textContent = element.password;
+            email.textContent = element.email;
+            row.appendChild(name)
+            row.appendChild(pass)
+            row.appendChild(email)
+
+            let table_body = document.querySelector('tbody')
+            table_body.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Login failed. Please try again.");
+    });
+
+    document.querySelector('.button').addEventListener('click', (event) => {
+        window.location.href = "http://localhost:8080/page/register";
+    });
+  </script>
+  <!--[if lte IE 9]>
+  </div>
+  <!--<![endif]-->
+</body>
+</html>

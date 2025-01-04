@@ -1,5 +1,5 @@
 const UserModel = require('../models/UserModel');
-
+const util = require('util');
 //Performing CRUD operations on user models.
 exports.getUserAll = async (req, res) => {
     try{
@@ -15,6 +15,8 @@ exports.getUserAll = async (req, res) => {
 
         //Sorting
         userLists = userLists.sort((a , b) => {return a[sort] - b[sort]})
+
+        // console.log('Get user all =>> ' + userLists)
 
         res.status(200).json({
             status: 'success',
@@ -79,12 +81,14 @@ exports.deleteUserByID = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
+    console.log('createUser calleddddddddddddddd with' + JSON.stringify(req.body));
     try{
         await UserModel.create(req.body)
         res.status(201);
     }
     catch(err)
     {
+        console.log('Error ' + err.message)
         res.status(400).json(err);
     }
 }

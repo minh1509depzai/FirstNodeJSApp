@@ -14,17 +14,14 @@ const Schema = new mongoose.Schema({
         type: String,
         required: [true, "Name must be provided"]
     },
-    age  :   {
-        type: Number,
-        required: [true, "Age must be provided"]
-    },
-    job  :   {
+    password  :   {
         type: String,
-        required: [true, "Job must be provided"]
+        required: [true, "Password must be provided"]
     },
-    male :   {
-        type: Boolean,
-        required: [true, "Gender must be provided"]
+    email  :   {
+        type: String,
+        required: [true, "Email must be provided"],
+        lowercase: true
     }
 })
 
