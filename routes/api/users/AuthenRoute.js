@@ -7,4 +7,8 @@ router
     .route('/register')
     .post(AuthenController.createUser)
 
+router
+    .route('/login')
+    .post(AuthenController.loginUser)
+
 module.exports = router

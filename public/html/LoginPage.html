@@ -118,7 +118,7 @@
             <p class="message" id="login-account">Already registered? <a href="#">Sign In</a></p>
           </form>
           <form class="login-form" id="login-form">
-            <input type="text" placeholder="username"/>
+            <input type="text" placeholder="email address"/>
             <input type="password" placeholder="password"/>
             <button id="login-button">login</button>
             <p class="message"  id="create-account">Not registered? <a href="#">Create an account</a></p>
@@ -180,6 +180,36 @@
             });
         }
 
+        function loginAccount() {
+            event.preventDefault()
+            try{
+                const logAccForm_element = document.getElementById("login-form");
+
+                let form = {};
+                form.email = logAccForm_element.querySelector("input[placeholder='email address']").value;
+                form.password = logAccForm_element.querySelector("input[placeholder='password']").value;
+                console.log(form);
+
+                fetch('http://localhost:8080/api/authen/login', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(form)
+                }).then(response => {
+                    if (!response.ok) {
+                        
+                    }
+                    return response.json();
+                }).then(data => {
+                    console.log(data);
+                });
+            }
+            catch(err) {
+                console.error(err);
+            }
+        }
+
         // Add a click event listener
         creAccSwitch_element.addEventListener("click", function(event) {
             swapVisibilityLoginAndRegister();
@@ -191,6 +221,10 @@
 
         creAccConf_element.addEventListener("click", function(event) {
             createAccount();
+        });
+
+        logAccConf_element.addEventListener("click", function(event) {
+            loginAccount();
         });
 
         showListButon_element.addEventListener("click", function(event) {
